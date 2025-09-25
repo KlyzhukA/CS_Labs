@@ -208,21 +208,21 @@ class Program
         }
 
         int maxFrequency = 0;
-        foreach (int count in frequency)
-        {
-            if (count > maxFrequency)
-            {
-                maxFrequency = count;
-            }
-        }
-
         char mostFrequentChar = ' ';
+
         for (int i = 0; i < frequency.Length; i++)
         {
-            if (frequency[i] == maxFrequency)
+            if (frequency[i] > maxFrequency)
             {
+                maxFrequency = frequency[i];
                 mostFrequentChar = ValidAminoAcids[i];
-                break;
+            }
+            else if (frequency[i] == maxFrequency && maxFrequency > 0)
+            {
+                if (ValidAminoAcids[i] < mostFrequentChar)
+                {
+                    mostFrequentChar = ValidAminoAcids[i];
+                }
             }
         }
 
