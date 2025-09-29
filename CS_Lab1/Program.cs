@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.IO;
 using CS_Lab1;
+using static System.Net.Mime.MediaTypeNames;
 class Program
 {
     private const string ValidAminoAcids = "ACDEFGHIKLMNPQRSTVWY";
@@ -151,8 +152,8 @@ class Program
             return result.ToString();
         }
 
-        string seq1 = RLDecoding(data1.amino_acids);
-        string seq2 = RLDecoding(data2.amino_acids);
+        string? seq1 = RLDecoding(data1.amino_acids);
+        string? seq2 = RLDecoding(data2.amino_acids);
 
         int minLength = Math.Min(seq1.Length, seq2.Length);
         int differences = Math.Abs(seq1.Length - seq2.Length);
@@ -230,8 +231,35 @@ class Program
         return result.ToString();
     }
 
+    static void FileOp(string adress)
+    {
+        int num = 0;
+        int sum = 0;
+        string str = "";
+        using (StreamReader reader = new StreamReader(adress))
+        {
+            try
+            {
+                reader.ReadLine();
+                while ((str = reader.ReadLine()) != null)
+                {
+                    num = Convert.ToInt32(str);
+                    sum += num;
+                }
+            }
+            catch
+            {
+                Console.Write("Файл не найден");
+            }
+        }
+        using (StreamWriter writer = new StreamWriter(adress, true))
+        {
+            writer.WriteLine(sum);
+        }
+    }
     static void Main()
     {
+        FileOp("C:\\Users\\klyzh\\source\\repos\\CS_Lab1\\CS_Lab1\\textfile\\text.txt");
         while (true)
         {
             Console.WriteLine("=== ГЕНЕТИЧЕСКИЙ ПОИСК ===");
@@ -261,6 +289,7 @@ class Program
 
                 if (!File.Exists(sequencesFile) || !File.Exists(commandsFile))
                 {
+                    
                     Console.WriteLine($"Файлы для примера {exampleNumber} не найдены!");
                     Console.WriteLine("Нажмите любую клавишу для продолжения...");
                     Console.ReadKey();
