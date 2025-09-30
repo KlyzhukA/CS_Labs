@@ -256,6 +256,17 @@ class Program
         {
             writer.WriteLine(sum);
         }
+        //string[] str1;
+        using (StreamReader reader = new StreamReader(adress))
+        {
+            string str1=string.Empty;
+          if(reader.EndOfStream==null)
+            {
+                str1 = reader.ReadLine();
+            }
+            string[] arr = str1.Split("\n", StringSplitOptions.RemoveEmptyEntries);
+            int res = Convert.ToInt32(arr[1] + arr[3]);
+        }
     }
     static void Main()
     {

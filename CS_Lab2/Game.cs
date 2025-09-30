@@ -22,8 +22,12 @@
         {
             switch (command)
             {
-                case 'M': mouse.Move(steps);break;
-                case 'C': cat.Move(steps);break;
+                case 'M': 
+                    mouse.Move(steps,size);
+                    break;
+                case 'C': 
+                    cat.Move(steps,size);
+                    break;
             }
         }
         private int GetDistance()

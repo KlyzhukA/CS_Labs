@@ -18,18 +18,35 @@
             this.name = name;
             this.location = -1;
         }
-        public void Move(int steps)
+        public void Move(int steps,int size)
         {
+            int steps2 = steps % size;
             if(this.location == -1)
             {
+                if (steps2 < 0)
+                {
+                    this.location = size + steps2;
+                    this.distanceTraveled = Math.Abs(steps);
+                }
+                else
+                {
+                    this.location = steps2;
+                    this.distanceTraveled = steps;
+                }
                 this.state = State.Playing;
-                this.location = steps;
-                this.distanceTraveled = steps;
             }
             else
             {
-                this.location += steps;
-                this.distanceTraveled += steps;
+                this.location += steps2;
+                this.distanceTraveled += Math.Abs(steps);
+                if(this.location < 0)
+                {
+                    this.location += size;
+                }
+                else if(this.location > size)
+                {
+                    this.location -= size;
+                }
             }
         }
     }
