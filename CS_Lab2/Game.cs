@@ -13,8 +13,10 @@
         public Player cat;
         public Player mouse;
         public GameState state;
-        public Game(int size)
+        public Game(string input, string output)
         {
+            this.inputFilePath = input;
+            this.outputFilePath = output;
             this.size = size;
             cat = new Player("Cat");
             mouse = new Player("Mouse");
@@ -44,43 +46,34 @@
         }
         public void Run()
         {
-            char commandLetter;
-            int steps = 0;
             using (StreamWriter writer = new StreamWriter(outputFilePath))
             {
                 writer.WriteLine("Cat and Mouse\n\n" +
                     "Cat Mouse  Distance\n" +
                     "-------------------");
             }
-            while(state != GameState.End)
+            using (StreamReader reader = new StreamReader(inputFilePath))
             {
-                using (StreamReader reader = new StreamReader(inputFilePath))
+                size = Convert.ToInt32(reader.ReadLine());
+                string line;
+                while ((line = reader.ReadLine()) != null && state != GameState.End)
                 {
-                    size = Convert.ToInt32(reader.ReadLine());
-                    string line;
-                    while((line = reader.ReadLine())!= null)
+                    string[] str = line.Trim().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                    if (str[0] == "P")
                     {
-                        string[] str = line.Trim().Split(" ");
-                        commandLetter = Convert.ToChar(str[0]);
-                        switch (commandLetter)
-                        {
-                            case 'M' or 'C':
-                                DoCommand(commandLetter, Convert.ToInt32(str[1]));
-                                break;
-                            case 'P':
-                                DoPrintCommand();
-                                break;
-                        }
+                        DoPrintCommand();
                     }
-                    state = GameState.End;
+                    else
+                    {
+                        DoCommand(Convert.ToChar(str[0]), Convert.ToInt32(str[1]));
+                    }
                 }
-                
             }
             using (StreamWriter writer = new StreamWriter(outputFilePath, true))
             {
-                writer.WriteLine("-------------------\n\n;");
+                writer.WriteLine("-------------------\n\n");
                 writer.WriteLine("Distance traveled:\t Mouse\t Cat");
-                writer.WriteLine($"\t\t\t\t\t{mouse.distanceTraveled}\t{cat.distanceTraveled}\n");
+                writer.WriteLine($"\t\t\t\t\t {mouse.distanceTraveled}\t\t{cat.distanceTraveled}\n");
                 if (cat.state != State.Winner)
                 {
                     writer.WriteLine("Mouse evaded Cat");
@@ -89,6 +82,7 @@
                 {
                     writer.WriteLine($"Mouse caught at: {mouse.location}");
                 }
+                Console.WriteLine("Результат записан в файл PursuitLog");
             }
         }
         public void DoPrintCommand()
@@ -97,18 +91,16 @@
             {
                 if (cat.state == State.NotInGame)
                 {
-                    writer.WriteLine("Mouse       Cat        Distance");
-                    writer.WriteLine(mouse.location + "\t    " + "??" + "\t");
+                    writer.WriteLine("??" + "  " + mouse.location);
                 }
                 else if (mouse.state == State.NotInGame)
                 {
-                    writer.WriteLine("Mouse       Cat        Distance");
-                    writer.WriteLine("??" + "\t    " + cat.location + "\t");
+                    writer.WriteLine(cat.location + "  " + "??");
                 }
                 else
                 {
-                    writer.WriteLine("Mouse       Cat        Distance");
-                    writer.WriteLine(mouse.location + "\t    " + cat.location + "\t" + GetDistance());
+
+                    writer.WriteLine(cat.location + "  " + mouse.location + "\t\t" + GetDistance());
 
                 }
             }

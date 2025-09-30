@@ -26,12 +26,10 @@
                 if (steps2 < 0)
                 {
                     this.location = size + steps2;
-                    this.distanceTraveled = Math.Abs(steps);
                 }
                 else
                 {
                     this.location = steps2;
-                    this.distanceTraveled = steps;
                 }
                 this.state = State.Playing;
             }
