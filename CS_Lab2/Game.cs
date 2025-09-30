@@ -7,6 +7,8 @@
     }
     class Game
     {
+        public string inputFilePath;
+        public string outputFilePath;
         public int size;
         public Player cat;
         public Player mouse;
@@ -44,6 +46,12 @@
         {
             char commandLetter;
             int steps = 0;
+            using (StreamWriter writer = new StreamWriter(outputFilePath))
+            {
+                writer.WriteLine("Cat and Mouse\n\n" +
+                    "Cat Mouse  Distance\n" +
+                    "-------------------");
+            }
             while(state != GameState.End)
             {
                 using (StreamReader reader = new StreamReader(inputFilePath))
@@ -68,33 +76,41 @@
                 }
                 
             }
-            Console.WriteLine($"Distance traveled: Mouse:{mouse.distanceTraveled} Cat:{cat.distanceTraveled}");
-            if(cat.state != State.Winner)
+            using (StreamWriter writer = new StreamWriter(outputFilePath, true))
             {
-                Console.WriteLine("Mouse evaded Cat");
-            }
-            else
-            {
-                Console.WriteLine($"Mouse caught at: {mouse.location}");
+                writer.WriteLine("-------------------\n\n;");
+                writer.WriteLine("Distance traveled:\t Mouse\t Cat");
+                writer.WriteLine($"\t\t\t\t\t{mouse.distanceTraveled}\t{cat.distanceTraveled}\n");
+                if (cat.state != State.Winner)
+                {
+                    writer.WriteLine("Mouse evaded Cat");
+                }
+                else
+                {
+                    writer.WriteLine($"Mouse caught at: {mouse.location}");
+                }
             }
         }
         public void DoPrintCommand()
         {
-            if (cat.state == State.NotInGame)
+            using (StreamWriter writer = new StreamWriter(outputFilePath, true))
             {
-                Console.WriteLine("Mouse       Cat        Distance");
-                Console.WriteLine(mouse.location + "\t    " + "??" + "\t");
-            }
-            else if (mouse.state == State.NotInGame)
-            {
-                Console.WriteLine("Mouse       Cat        Distance");
-                Console.WriteLine("??" + "\t    " + cat.location + "\t");
-            }
-            else
-            {
-                Console.WriteLine("Mouse       Cat        Distance");
-                Console.WriteLine(mouse.location + "\t    " + cat.location + "\t" + GetDistance());
+                if (cat.state == State.NotInGame)
+                {
+                    writer.WriteLine("Mouse       Cat        Distance");
+                    writer.WriteLine(mouse.location + "\t    " + "??" + "\t");
+                }
+                else if (mouse.state == State.NotInGame)
+                {
+                    writer.WriteLine("Mouse       Cat        Distance");
+                    writer.WriteLine("??" + "\t    " + cat.location + "\t");
+                }
+                else
+                {
+                    writer.WriteLine("Mouse       Cat        Distance");
+                    writer.WriteLine(mouse.location + "\t    " + cat.location + "\t" + GetDistance());
 
+                }
             }
         }
     }
