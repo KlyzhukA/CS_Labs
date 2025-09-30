@@ -88,8 +88,22 @@
         }
         public void DoPrintCommand()
         {
-            Console.WriteLine("Cat Mouse  Distance");
-            Console.WriteLine($"{cat.location}\t{mouse.location}\t\t{GetDistance()}");
+            if (cat.state == State.NotInGame)
+            {
+                Console.WriteLine("Mouse       Cat        Distance");
+                Console.WriteLine(mouse.location + "\t    " + "??" + "\t");
+            }
+            else if (mouse.state == State.NotInGame)
+            {
+                Console.WriteLine("Mouse       Cat        Distance");
+                Console.WriteLine("??" + "\t    " + cat.location + "\t");
+            }
+            else
+            {
+                Console.WriteLine("Mouse       Cat        Distance");
+                Console.WriteLine(mouse.location + "\t    " + cat.location + "\t" + GetDistance());
+
+            }
         }
     }
 }
