@@ -29,6 +29,12 @@
                     cat.Move(steps,size);
                     break;
             }
+            if (GetDistance() == 0)
+            {
+                mouse.state = State.Loser;
+                cat.state = State.Winner;
+                state = GameState.End;
+            }
         }
         private int GetDistance()
         {
@@ -36,49 +42,31 @@
         }
         public void Run()
         {
-            int choice = 0;
+            char commandLetter;
             int steps = 0;
             while(state != GameState.End)
             {
-                Console.WriteLine("Выберите пункт:\n" +
-                    "1. M\n" +
-                    "2. C\n" +
-                    "3. P\n" +
-                    "4. Конец игры");
-                choice = Convert.ToInt32(Console.ReadLine());
-                switch (choice)
+                using (StreamReader reader = new StreamReader(inputFilePath))
                 {
-                    case 1:
-                        if (mouse.state == State.NotInGame) mouse.state = State.Playing;
-                        Console.WriteLine("Введите кол-во шагов");
-                        steps = Convert.ToInt32(Console.ReadLine());
-                        DoCommand('M', steps);
-                        if (GetDistance() == 0)
+                    size = Convert.ToInt32(reader.ReadLine());
+                    string line;
+                    while((line = reader.ReadLine())!= null)
+                    {
+                        string[] str = line.Trim().Split(" ");
+                        commandLetter = Convert.ToChar(str[0]);
+                        switch (commandLetter)
                         {
-                            mouse.state = State.Loser;
-                            cat.state = State.Winner;
-                            state = GameState.End;
+                            case 'M' or 'C':
+                                DoCommand(commandLetter, Convert.ToInt32(str[1]));
+                                break;
+                            case 'P':
+                                DoPrintCommand();
+                                break;
                         }
-                        break;
-                    case 2:
-                        if (cat.state == State.NotInGame) cat.state = State.Playing;
-                        Console.WriteLine("Введите кол-во шагов");
-                        steps = Convert.ToInt32(Console.ReadLine());
-                        DoCommand('C', steps);
-                        if (GetDistance() == 0)
-                        {
-                            mouse.state = State.Loser;
-                            cat.state = State.Winner;
-                            state = GameState.End;
-                        }
-                        break;
-                    case 3:
-                        DoPrintCommand();
-                        break;
-                    case 4:
-                        state = GameState.End;
-                        break;
+                    }
+                    state = GameState.End;
                 }
+                
             }
             Console.WriteLine($"Distance traveled: Mouse:{mouse.distanceTraveled} Cat:{cat.distanceTraveled}");
             if(cat.state != State.Winner)
