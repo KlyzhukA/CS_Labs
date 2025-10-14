@@ -1,19 +1,19 @@
 ﻿namespace CS_Lab2
 {
-    enum State
+   public enum State
     {
         Winner,
         Loser,
         Playing,
         NotInGame,
     }
-    class Player
+  public  class Player
     {
         public string name;
         public State state = State.NotInGame;
         public int location;
         public int distanceTraveled;
-        public Player(string name)
+        public Player(string name) 
         {
             this.name = name;
             this.location = -1;

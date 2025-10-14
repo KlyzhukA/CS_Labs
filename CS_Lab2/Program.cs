@@ -2,8 +2,41 @@
 
 class Program
 {
+   static public (int,char) Test(string str)
+    {
+        int count = 0;
+        char currentChar = ' ';
+        //asdsdDFDsdfds
+        foreach(char c in str)
+        {
+            if (char.IsAsciiLetterUpper(c))
+            {
+                currentChar = c;
+                break;
+            }
+        }
+        foreach (char b in str)
+        {
+            if (b == currentChar)
+            {
+                count++;
+            }
+        }
+        return (count, currentChar);
+    }
     public static void Main(string[] args)
     {
+        NewPlayer tom = new NewPlayer(10, "Tom");
+        NewPlayer bob = new NewPlayer(10, "Bob");
+        NewPlayer alex = new NewPlayer(10, "Alex");
+        NewPlayer[] players = { bob, alex, tom };
+        Array.Sort(players);
+        foreach(NewPlayer a in players)
+        {
+            Console.WriteLine(a.name);
+        }
+        (int, char) cortezhTest;
+        cortezhTest = Test("asdasdGfGGGHI");
         string output = "C:\\Users\\klyzh\\source\\repos\\CS_Lab1\\CS_Lab2\\Files\\PursuitLog.txt";
         string input = "";
         try
