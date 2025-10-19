@@ -14,7 +14,7 @@ namespace CS_Lab3
             {
                 char c = input[i];
 
-                if (char.IsLetterOrDigit(c))
+                if (char.IsLetterOrDigit(c) || c == '-')
                 {
                     currentWord.Append(c);
                 }

@@ -3,6 +3,5 @@
     public abstract class Token
     {
         public string Value { get; set; }
-
     }
 }
