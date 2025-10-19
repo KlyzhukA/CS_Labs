@@ -2,7 +2,7 @@
 
 class Program
 {
-   static public (int,char) Test(string str)
+   static public (int,char) Test1(string str)
     {
         int count = 0;
         char currentChar = ' ';
@@ -36,7 +36,7 @@ class Program
             Console.WriteLine(a.name);
         }
         (int, char) cortezhTest;
-        cortezhTest = Test("asdasdGfGGGHI");
+        cortezhTest = Test1("asdasdGfGGGHI");
         string output = "C:\\Users\\klyzh\\source\\repos\\CS_Lab1\\CS_Lab2\\Files\\PursuitLog.txt";
         string input = "";
         try
