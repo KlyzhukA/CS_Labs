@@ -2,7 +2,7 @@
 
 namespace CS_Lab3
 {
-    public class Sentence : Token
+    public class Sentence : Token, IComparable<Sentence>
     {
         public List<Token> Tokens { get; set; } = new List<Token>();
         public new string Value
@@ -26,6 +26,22 @@ namespace CS_Lab3
                 return result.ToString();
             }
             set { }
+        }
+        public int WordCounter()
+        {
+            int counter = 0;
+            foreach(var token in Tokens)
+            {
+                if (token is Word)
+                {
+                    counter++;
+                }
+            }
+            return counter;
+        }
+        public int CompareTo(Sentence? sentence)
+        {
+            return WordCounter() - sentence.WordCounter();
         }
     }
 }

@@ -18,5 +18,6 @@ class Program
                 Console.WriteLine(token.Value);
             }
         }
+        TextProcessor.PrintByWordsCount(text);
     }
 }
