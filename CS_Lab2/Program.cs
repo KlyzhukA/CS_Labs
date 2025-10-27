@@ -37,7 +37,7 @@ class Program
         }
         (int, char) cortezhTest;
         cortezhTest = Test1("asdasdGfGGGHI");
-        string output = "C:\\Users\\klyzh\\source\\repos\\CS_Lab1\\CS_Lab2\\Files\\PursuitLog.txt";
+        string output = "C:\\Users\\Admin\\source\\repos\\KlyzhukA\\CS_Labs\\CS_Lab2\\Files\\PursuitLog.txt";
         string input = "";
         try
         {
@@ -49,13 +49,13 @@ class Program
             switch (choice)
             {
                 case 1:
-                    input = "C:\\Users\\klyzh\\source\\repos\\CS_Lab1\\CS_Lab2\\Files\\1.ChaseData.txt";
+                    input = "C:\\Users\\Admin\\source\\repos\\KlyzhukA\\CS_Labs\\CS_Lab2\\Files\\1.ChaseData.txt";
                     break;
                 case 2:
-                    input = "C:\\Users\\klyzh\\source\\repos\\CS_Lab1\\CS_Lab2\\Files\\2.ChaseData.txt";
+                    input = "C:\\Users\\Admin\\source\\repos\\KlyzhukA\\CS_Labs\\CS_Lab2\\Files\\2.ChaseData.txt";
                     break;
                 case 3:
-                    input = "C:\\Users\\klyzh\\source\\repos\\CS_Lab1\\CS_Lab2\\Files\\3.ChaseData.txt";
+                    input = "C:\\Users\\Admin\\source\\repos\\KlyzhukA\\CS_Labs\\CS_Lab2\\Files\\3.ChaseData.txt";
                     break;
 
             }

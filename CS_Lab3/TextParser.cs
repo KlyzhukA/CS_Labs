@@ -34,9 +34,10 @@ namespace CS_Lab3
                         currentWord.Clear();
                     }
 
-                    currentSentence.Tokens.Add(new Punctuation { Value = c.ToString() });
+                    Punctuation punctuation = new Punctuation(c.ToString());
+                    currentSentence.Tokens.Add(punctuation);
 
-                    if (IsSentenceEndingPunctuation(c))
+                    if (punctuation.IsEndingPunctuation)
                     {
                         if (currentSentence.Tokens.Count > 0)
                         {
@@ -47,10 +48,6 @@ namespace CS_Lab3
                 }
             }
             return text;
-        }
-        private static bool IsSentenceEndingPunctuation(char c)
-        {
-            return c == '.' || c == '!' || c == '?' || c == '…';
         }
     }
 }
