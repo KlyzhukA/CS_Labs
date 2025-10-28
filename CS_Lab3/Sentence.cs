@@ -4,7 +4,14 @@ namespace CS_Lab3
 {
     public class Sentence : Token, IComparable<Sentence>
     {
+        public enum CompareBy
+        {
+            Word,
+            Char
+        }
+        public CompareBy ComparisonWay = CompareBy.Word;
         public List<Token> Tokens { get; set; } = new List<Token>();
+        public bool IsQuastion = false;
         public new string Value
         {
             get
@@ -41,7 +48,14 @@ namespace CS_Lab3
         }
         public int CompareTo(Sentence? sentence)
         {
-            return WordCounter() - sentence.WordCounter();
+            if (ComparisonWay == CompareBy.Word)
+            {
+                return WordCounter() - sentence.WordCounter();
+            }
+            else
+            {
+                return Value.Length - sentence.Value.Length;
+            }
         }
     }
 }

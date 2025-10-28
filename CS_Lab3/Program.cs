@@ -19,5 +19,6 @@ class Program
             }
         }
         TextProcessor.PrintByWordsCount(text);
+        TextProcessor.PrintBySentenceLength(text);
     }
 }

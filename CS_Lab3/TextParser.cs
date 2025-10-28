@@ -39,6 +39,10 @@ namespace CS_Lab3
 
                     if (punctuation.IsEndingPunctuation)
                     {
+                        if(punctuation.Value == "?")
+                        {
+                            currentSentence.IsQuastion = true;
+                        }
                         if (currentSentence.Tokens.Count > 0)
                         {
                             text.Sentences.Add(currentSentence);
