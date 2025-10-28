@@ -4,30 +4,40 @@ namespace CS_Lab3
 {
     public class TextProcessor
     {
-        public static void PrintByWordsCount(Text text)
+        public static void PrintByWordsCount(Text text, string path)
         {
-            Console.WriteLine("предлодения по счету");
-            foreach(Sentence s in text.Sentences)
+            var sortedSentences = new List<Sentence>(text.Sentences);
+            foreach (Sentence s in sortedSentences)
             {
                 s.ComparisonWay = Sentence.CompareBy.Word;
             }
-            text.Sentences.Sort();
-            foreach(Sentence sentence in text.Sentences)
+            sortedSentences.Sort();
+            using (StreamWriter sw = new StreamWriter(path))
             {
-                Console.WriteLine(sentence.Value);
+                sw.WriteLine("---------------------------------");
+                sw.WriteLine("Предложения по кол-ву слов");
+                foreach (Sentence sentence in sortedSentences)
+                {
+                    sw.WriteLine(sentence.Value);
+                }
             }
         }
-        public static void PrintBySentenceLength(Text text)
+        public static void PrintBySentenceLength(Text text, string path)
         {
-            Console.WriteLine("предложения по длине");
-            foreach (Sentence s in text.Sentences)
+            var sortedSentences = new List<Sentence>(text.Sentences);
+            foreach (Sentence s in sortedSentences)
             {
                 s.ComparisonWay = Sentence.CompareBy.Char;
             }
-            text.Sentences.Sort();
-            foreach (Sentence sentence in text.Sentences)
+            sortedSentences.Sort();
+            using (StreamWriter sw = new StreamWriter(path))
             {
-                Console.WriteLine(sentence.Value);
+                sw.WriteLine("---------------------------------");
+                sw.WriteLine("Предложения по кол-ву символов");
+                foreach (Sentence sentence in sortedSentences)
+                {
+                    sw.WriteLine(sentence.Value);
+                }
             }
         }
         public static List<Word> FindWordsInQuastions(Text text, int n)
@@ -51,7 +61,7 @@ namespace CS_Lab3
             }
             return words;
         }
-        public static Text DeleteWords(Text text, int n)
+        public static void DeleteWords(Text text, int n)
         {
             var consonants = new List<char> {
             'б', 'в', 'г', 'д', 'ж', 'з', 'й', 'к', 'л', 'м', 'н', 'п', 'р', 'с', 'т', 'ф', 'х', 'ц', 'ч', 'ш', 'щ',
@@ -76,7 +86,6 @@ namespace CS_Lab3
                     s.Tokens.Add(w);
                 }
             }
-            return text;
         }
     }
 }

@@ -1,14 +1,16 @@
 ﻿using CS_Lab3;
+using System.Text;
 
 class Program
 {
     private static void Main(string[] args)
     {
-        string testText = "Программирование - это искусство создания инструкций для компьютера с помощью" +
-            " специальных языков. В C# каждая программа должна содержать как минимум один класс" +
-            " с методом Main, который является точкой входа в приложение." +
-            " Объектно-ориентированное программирование позволяет создавать модульные программы" +
-            " и повторно использовать код через механизмы наследования и полиморфизма.";
+        string testText = "";
+        using (StreamReader sr = new StreamReader("C:\\Users\\Admin\\source\\repos\\KlyzhukA\\CS_Labs\\CS_Lab3\\Files\\Text.txt", Encoding.UTF8))
+        {
+            testText = sr.ReadToEnd();
+            Console.WriteLine(testText);
+        }
         Text text = TextParser.Parse(testText);
         foreach(Sentence sentence in text.Sentences)
         {
@@ -18,7 +20,7 @@ class Program
                 Console.WriteLine(token.Value);
             }
         }
-        TextProcessor.PrintByWordsCount(text);
-        TextProcessor.PrintBySentenceLength(text);
+        TextProcessor.PrintByWordsCount(text, "C:\\Users\\Admin\\source\\repos\\KlyzhukA\\CS_Labs\\CS_Lab3\\Files\\ByWords.txt");
+        TextProcessor.PrintBySentenceLength(text, "C:\\Users\\Admin\\source\\repos\\KlyzhukA\\CS_Labs\\CS_Lab3\\Files\\ByChars.txt");
     }
 }
