@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using Microsoft.VisualBasic;
+using System.Reflection.PortableExecutable;
+using System.Text;
 
 namespace CS_Lab3
 {
@@ -21,6 +23,7 @@ namespace CS_Lab3
                     sw.WriteLine(sentence.Value);
                 }
             }
+            Console.WriteLine("Результат записан в task.txt");
         }
         public static void PrintBySentenceLength(Text text, string path)
         {
@@ -39,6 +42,7 @@ namespace CS_Lab3
                     sw.WriteLine(sentence.Value);
                 }
             }
+            Console.WriteLine("Результат записан в task.txt");
         }
         public static List<Word> FindWordsInQuastions(Text text, int n)
         {
@@ -83,7 +87,39 @@ namespace CS_Lab3
                 }
                 foreach(Word w in words)
                 {
-                    s.Tokens.Add(w);
+                    s.Tokens.Remove(w);
+                }
+            }
+        }
+        public static void ReplaceWords(Text text, int index, string str, int num)
+        {
+            foreach (Token t in text.Sentences[index - 1].Tokens)
+            {
+                if(t is Word w && w.Value.Length == num)
+                {
+                    w.Value = str;
+                }
+            }
+        }
+        public static void RemoveStopWords(Text text, string path)
+        {
+            List<string> stopwords = new List<string>();
+            using (StreamReader sr = new StreamReader(path))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    stopwords.Add(line.Trim());
+                }
+            }
+            foreach (Sentence s in text.Sentences)
+            {
+                foreach (Token t in s.Tokens)
+                {
+                    if (t is Word w && stopwords.Contains(w.Value))
+                    {
+                        s.Tokens.Remove(w);
+                    }
                 }
             }
         }

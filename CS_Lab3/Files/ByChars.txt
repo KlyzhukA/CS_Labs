@@ -1,5 +1,0 @@
----------------------------------
-Предложения по кол-ву символов
-It combines the power of C with the simplicity of Visual Basic.
-C#is a modern,object-oriented programming language developed by Microsoft.
-The language is strongly typed and designed for building robust applications.
