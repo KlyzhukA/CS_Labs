@@ -1,4 +1,6 @@
-﻿namespace CS_Lab3
+﻿using System.Xml.Serialization;
+
+namespace CS_Lab3
 {
     public abstract class Token
     {

@@ -1,1 +1,1 @@
-﻿C# is a modern, object-oriented programming language developed by Microsoft? It combines the power of C++ with the simplicity of Visual Basic. The language is strongly typed and designed for building robust applications.
+﻿C# is a always modern, object-oriented programming language developed by Microsoft? It combines the power of C++ with the simplicity of Visual Basic. The language is strongly typed and designed for building robust applications.

@@ -14,7 +14,7 @@ namespace CS_Lab3
                 s.ComparisonWay = Sentence.CompareBy.Word;
             }
             sortedSentences.Sort();
-            using (StreamWriter sw = new StreamWriter(path))
+            using (StreamWriter sw = new StreamWriter(path, true))
             {
                 sw.WriteLine("---------------------------------");
                 sw.WriteLine("Предложения по кол-ву слов");
@@ -33,7 +33,7 @@ namespace CS_Lab3
                 s.ComparisonWay = Sentence.CompareBy.Char;
             }
             sortedSentences.Sort();
-            using (StreamWriter sw = new StreamWriter(path))
+            using (StreamWriter sw = new StreamWriter(path, true))
             {
                 sw.WriteLine("---------------------------------");
                 sw.WriteLine("Предложения по кол-ву символов");
@@ -114,12 +114,17 @@ namespace CS_Lab3
             }
             foreach (Sentence s in text.Sentences)
             {
+                List<Word> words = new List<Word>();
                 foreach (Token t in s.Tokens)
                 {
                     if (t is Word w && stopwords.Contains(w.Value))
                     {
-                        s.Tokens.Remove(w);
+                        words.Add(w);
                     }
+                }
+                foreach (Word w in words)
+                {
+                    s.Tokens.Remove(w);
                 }
             }
         }
