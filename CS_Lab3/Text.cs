@@ -4,9 +4,13 @@ using System.Xml.Serialization;
 
 namespace CS_Lab3
 {
+    [Serializable]
+    [XmlRoot("text")]
     public class Text
     {
+        [XmlElement("sentence")]
         public List<Sentence> Sentences { get; set; } = new List<Sentence>();
+        [XmlIgnore]
         public new string Value
         {
             get
@@ -19,5 +23,6 @@ namespace CS_Lab3
                 return sb.ToString();
             }
         }
+        public Text() { }
     }
 }
