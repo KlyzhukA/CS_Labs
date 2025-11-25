@@ -11,6 +11,8 @@ namespace CS_Lab3
         [XmlElement("sentence")]
         public List<Sentence> Sentences { get; set; } = new List<Sentence>();
         [XmlIgnore]
+        public string FullText { get; set; }
+        [XmlIgnore]
         public new string Value
         {
             get

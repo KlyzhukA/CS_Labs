@@ -9,6 +9,5 @@ namespace CS_Lab3
     {
         [XmlText]
         public string Value { get; set; }
-        public Token() { }
     }
 }

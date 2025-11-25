@@ -14,7 +14,7 @@ namespace CS_Lab3
             Char
         }
         [XmlIgnore]
-        public CompareBy ComparisonWay = CompareBy.Word;
+        public CompareBy ComparisonWay = CompareBy.Word;       
         [XmlElement("word", Type = typeof(Word))]
         [XmlElement("punctuation", Type = typeof(Punctuation))]
         public List<Token> Tokens { get; set; } = new List<Token>();

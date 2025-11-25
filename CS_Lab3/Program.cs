@@ -24,6 +24,7 @@ class Program
                     Console.WriteLine(testText);
                 }
                 text = TextParser.Parse(testText);
+                text.FullText = testText;
                 break;
             case 2:
                 using (StreamReader sr = new StreamReader("C:\\Users\\Admin\\source\\repos\\KlyzhukA\\CS_Labs\\CS_Lab3\\Files\\Text.txt"))
@@ -32,6 +33,7 @@ class Program
                     Console.WriteLine(testText);
                 }
                 text = TextParser.Parse(testText);
+                text.FullText = testText;
                 break;
         }
         using (var writer = new StreamWriter(path, false))
@@ -48,7 +50,8 @@ class Program
             "5. В некотором предложении текста заменить слова заданной длины на указанную подстроку\n" +
             "6. Удалить стоп-слова\n" +
             "7. Текущий вид текста\n" +
-            "8. Экспортировать текстовый объект в XML-документ");
+            "8. Экспортировать текстовый объект в XML-документ\n" +
+            "9. Построить конкорданс");
             int choice = Convert.ToInt32(Console.ReadLine());
             switch (choice)
             {
@@ -118,6 +121,9 @@ class Program
                         serializer.Serialize(sw, text);
                     }
                     Console.WriteLine("Объект экспортирован в файл text.xml");
+                    break;
+                case 9:
+                    TextProcessor.BuildConcordance(text, path);
                     break;
                 case 0:
                     return;

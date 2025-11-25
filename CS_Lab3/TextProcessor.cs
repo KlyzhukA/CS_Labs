@@ -128,5 +128,76 @@ namespace CS_Lab3
                 }
             }
         }
+        public static void BuildConcordance(Text text, string path)
+        {
+            var concordance = new Dictionary<string, (int count, List<int> lines)>();
+            string[] allLines = text.FullText.Split('\n');
+
+            int lineNumber = 1;
+
+            foreach (string line in allLines)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    lineNumber++;
+                    continue;
+                }
+
+                string[] words = line.Split(new[] { ' ', ',', '.', '!', '?', ';', ':', '(', ')', '[', ']', '{', '}', '"', '\'' },
+                                          StringSplitOptions.RemoveEmptyEntries);
+
+                var wordsInLine = new List<string>();
+
+                foreach (string word in words)
+                {
+                    string cleanWord = word.Trim().ToLower();
+
+                    if (string.IsNullOrEmpty(cleanWord)) continue;
+
+                    if (!concordance.ContainsKey(cleanWord))
+                    {
+                        concordance[cleanWord] = (0, new List<int>());
+                    }
+
+                    var tuple = concordance[cleanWord];
+                    concordance[cleanWord] = (tuple.count + 1, tuple.lines);
+
+                    if (!wordsInLine.Contains(cleanWord))
+                    {
+                        concordance[cleanWord].lines.Add(lineNumber);
+                        wordsInLine.Add(cleanWord);
+                    }
+                }
+
+                lineNumber++;
+            }
+
+            var sortedKeys = new List<string>(concordance.Keys);
+            sortedKeys.Sort();
+
+            using (StreamWriter sw = new StreamWriter(path, true))
+            {
+                sw.WriteLine("---------------------------------");
+                sw.WriteLine("Конкорданс:");
+
+                foreach (string word in sortedKeys)
+                {
+                    int totalCount = concordance[word].count;
+                    List<int> lineNumbers = concordance[word].lines;
+
+                    lineNumbers.Sort();
+
+                    string lineNumbersStr = "";
+                    foreach (int num in lineNumbers)
+                    {
+                        lineNumbersStr += num.ToString();
+                    }
+
+                    sw.WriteLine($"{word}......{totalCount}:{lineNumbersStr}");
+                }
+            }
+
+            Console.WriteLine("Конкорданс построен и записан в task.txt");
+        }
     }
 }
