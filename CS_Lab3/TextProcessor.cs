@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System.Reflection.PortableExecutable;
-using System.Text;
+﻿using System.Text.RegularExpressions;
 
 namespace CS_Lab3
 {
@@ -47,13 +45,13 @@ namespace CS_Lab3
         public static List<Word> FindWordsInQuastions(Text text, int n)
         {
             List<Word> words = new List<Word>();
-            foreach(Sentence s in text.Sentences)
+            foreach (Sentence s in text.Sentences)
             {
                 if (s.IsQuastion)
                 {
-                    foreach(Token t in s.Tokens)
+                    foreach (Token t in s.Tokens)
                     {
-                        if(t is Word w && w.Value.Length == n)
+                        if (t is Word w && w.Value.Length == n)
                         {
                             if (!words.Contains(w))
                             {
@@ -85,7 +83,7 @@ namespace CS_Lab3
                         }
                     }
                 }
-                foreach(Word w in words)
+                foreach (Word w in words)
                 {
                     s.Tokens.Remove(w);
                 }
@@ -95,7 +93,7 @@ namespace CS_Lab3
         {
             foreach (Token t in text.Sentences[index - 1].Tokens)
             {
-                if(t is Word w && w.Value.Length == num)
+                if (t is Word w && w.Value.Length == num)
                 {
                     w.Value = str;
                 }
@@ -135,6 +133,21 @@ namespace CS_Lab3
 
             int lineNumber = 1;
 
+            Regex phoneRegex = new Regex(
+                @"(?:\+\d{1,3}[-.\s]?)?(?:\(?\d{1,4}\)?[-.\s]?)?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}",
+                RegexOptions.Compiled
+            );
+
+            Regex dateRegex = new Regex(
+                @"\b\d{1,2}[-./]\d{1,2}[-./]\d{2,4}\b|\b\d{4}[-./]\d{1,2}[-./]\d{1,2}\b",
+                RegexOptions.Compiled
+            );
+
+            Regex emailRegex = new Regex(
+                @"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", 
+                RegexOptions.Compiled | RegexOptions.IgnoreCase
+            );
+
             foreach (string line in allLines)
             {
                 if (string.IsNullOrWhiteSpace(line))
@@ -143,14 +156,47 @@ namespace CS_Lab3
                     continue;
                 }
 
-                string[] words = line.Split(new[] { ' ', ',', '.', '!', '?', ';', ':', '(', ')', '[', ']', '{', '}', '"', '\'' },
-                                          StringSplitOptions.RemoveEmptyEntries);
+                var tokens = new List<string>();
+
+                var matches = new List<Match>();
+
+                matches.AddRange(phoneRegex.Matches(line).Cast<Match>());
+                matches.AddRange(dateRegex.Matches(line).Cast<Match>());
+                matches.AddRange(emailRegex.Matches(line).Cast<Match>());
+
+                if (matches.Count > 0)
+                {
+                    matches.Sort((a, b) => a.Index.CompareTo(b.Index));
+
+                    int lastIndex = 0;
+                    foreach (var match in matches)
+                    {
+                        if (match.Index > lastIndex)
+                        {
+                            string beforeMatch = line.Substring(lastIndex, match.Index - lastIndex);
+                            tokens.AddRange(SplitIntoWords(beforeMatch));
+                        }
+
+                        tokens.Add(match.Value);
+                        lastIndex = match.Index + match.Length;
+                    }
+
+                    if (lastIndex < line.Length)
+                    {
+                        string afterMatch = line.Substring(lastIndex);
+                        tokens.AddRange(SplitIntoWords(afterMatch));
+                    }
+                }
+                else
+                {
+                    tokens.AddRange(SplitIntoWords(line));
+                }
 
                 var wordsInLine = new List<string>();
 
-                foreach (string word in words)
+                foreach (string token in tokens)
                 {
-                    string cleanWord = word.Trim().ToLower();
+                    string cleanWord = token.Trim().ToLower();
 
                     if (string.IsNullOrEmpty(cleanWord)) continue;
 
@@ -159,7 +205,7 @@ namespace CS_Lab3
                         concordance[cleanWord] = (0, new List<int>());
                     }
 
-                    var tuple = concordance[cleanWord];
+                    (int count, List<int> lines) tuple = concordance[cleanWord];
                     concordance[cleanWord] = (tuple.count + 1, tuple.lines);
 
                     if (!wordsInLine.Contains(cleanWord))
@@ -190,14 +236,28 @@ namespace CS_Lab3
                     string lineNumbersStr = "";
                     foreach (int num in lineNumbers)
                     {
-                        lineNumbersStr += num.ToString();
+                        lineNumbersStr += num.ToString() + " ";
                     }
 
-                    sw.WriteLine($"{word}......{totalCount}:{lineNumbersStr}");
+                    if (lineNumbersStr.Length > 0)
+                        lineNumbersStr = lineNumbersStr.TrimEnd();
+
+                    string formattedWord = word;
+                    int dotsNeeded = 25 - word.Length;
+                    for (int i = 0; i < dotsNeeded; i++)
+                    {
+                        formattedWord += ".";
+                    }
+                    sw.WriteLine($"{formattedWord}{totalCount}:{lineNumbersStr}");
                 }
             }
 
             Console.WriteLine("Конкорданс построен и записан в task.txt");
+        }
+        private static List<string> SplitIntoWords(string text)
+        {
+            return text.Split(new[] { ' ', ',', '.', '!', '?', ';', ':', '(', ')', '[', ']', '{', '}', '"', '\'', '«', '»', '—', '-', '&', '\t', '\r' },
+            StringSplitOptions.RemoveEmptyEntries).Where(w => !string.IsNullOrWhiteSpace(w)).ToList();
         }
     }
 }
