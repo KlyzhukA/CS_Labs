@@ -2,9 +2,8 @@
 {
     public abstract class Wagon
     {
-        public int PassengerCapacity { get; set; }
-        public string ComfortLevel { get; set; }
-
+        public string WagonNumber { get; set; }
         public abstract string GetDescription();
+        public abstract WagonType GetWagonType();
     }
 }

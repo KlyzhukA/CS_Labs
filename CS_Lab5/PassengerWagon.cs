@@ -1,19 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CS_Lab5
+﻿namespace CS_Lab5
 {
     public class PassengerWagon : Wagon
     {
-        public bool HasAirConditioning { get; set; }
-        public int LuggageCapacity { get; set; }
+        public int PassengerCapacity { get; set; }
+        public int SeatsOccupied { get; set; } = 0;
+        public ComfortType ComfortLevel { get; set; }
+        public double TicketPrice { get; set; }
+        public int AvailableSeats => PassengerCapacity - SeatsOccupied;
+
+        public bool BookSeat(int count = 1)
+        {
+            if (AvailableSeats >= count)
+            {
+                SeatsOccupied += count;
+                return true;
+            }
+            return false;
+        }
+
+        public bool CancelBooking(int count = 1)
+        {
+            if (SeatsOccupied >= count)
+            {
+                SeatsOccupied -= count;
+                return true;
+            }
+            return false;
+        }
 
         public override string GetDescription()
         {
-            return $"Пассажирский вагон: {PassengerCapacity} пассажиров, {LuggageCapacity} кг багажа, комфорт: {ComfortLevel}";
+            return $"Вагон №{WagonNumber}: {PassengerCapacity} мест, " +
+                   $"Свободно: {AvailableSeats}, Цена: {TicketPrice:C}";
         }
+
+        public override WagonType GetWagonType() => WagonType.Passenger;
     }
 }
